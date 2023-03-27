@@ -5,6 +5,7 @@ namespace Deg540\PHPTestingBoilerplate\Application;
 class Ohce
 {
     private Horario $hora;
+    private string $name;
 
     /**
      * @param Horario $hora
@@ -14,18 +15,32 @@ class Ohce
         $this->hora = $hora;
     }
 
-    public function saludo(string $name): string
+    public function ohceResponse(string $request): string
     {
-        $date = $this->hora->getHora();
+        if(str_starts_with($request, "ohce")){
+            $date = $this->hora->getHora();
+            $this->name = explode(" ", $request)[1];
 
-        if($date>=6 && $date<12){
-            return "Buenos dias ".explode(" ", $name)[1];
+            if($date>=6 && $date<12){
+                return "Buenos dias ".$this->name;
+            }
+
+            if($date>=12 && $date<20){
+                return "Buenas tardes ".$this->name;
+            }
+
+            return "Buenas noches ".$this->name;
         }
 
-        if($date>=12 && $date<20){
-            return "Buenas tardes ".explode(" ", $name)[1];
+        if(strrev($request) == $request){
+            return $request."\nBonitaPalabra";
         }
 
-        return "Buenas noches ".explode(" ", $name)[1];
+        if($request == "Stop!"){
+            return "Adios ".$this->name;
+        }
+
+        return strrev($request);
     }
+
 }

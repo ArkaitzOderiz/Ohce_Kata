@@ -30,7 +30,7 @@ final class OhceTest extends TestCase
 
         $this->hora->allows()->getHora()->andReturns(11);
 
-        $result = $this->ohce->saludo("ohce Pedro");
+        $result = $this->ohce->ohceResponse("ohce Pedro");
 
         $this->assertEquals("Buenos dias Pedro", $result);
     }
@@ -42,7 +42,7 @@ final class OhceTest extends TestCase
     {
         $this->hora->allows()->getHora()->andReturns(21);
 
-        $result = $this->ohce->saludo("ohce Pedro");
+        $result = $this->ohce->ohceResponse("ohce Pedro");
 
         $this->assertEquals("Buenas noches Pedro", $result);
     }
@@ -54,8 +54,44 @@ final class OhceTest extends TestCase
     {
         $this->hora->allows()->getHora()->andReturns(17);
 
-        $result = $this->ohce->saludo("ohce Pedro");
+        $result = $this->ohce->ohceResponse("ohce Pedro");
 
         $this->assertEquals("Buenas tardes Pedro", $result);
     }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTheWorldBackwards()
+    {
+        $result = $this->ohce->ohceResponse("hola");
+
+        $this->assertEquals("aloh", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnTheWorldBackwardsAndBonitaPalabraIfIsPalindrome()
+    {
+        $result = $this->ohce->ohceResponse("kayak");
+
+        $this->assertEquals("kayak\nBonitaPalabra", $result);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnAdiosYourName()
+    {
+        $this->hora->allows()->getHora()->andReturns(17);
+
+        $this->ohce->ohceResponse("ohce Pedro");
+
+        $result = $this->ohce->ohceResponse("Stop!");
+
+        $this->assertEquals("Adios Pedro", $result);
+    }
+
+
 }
